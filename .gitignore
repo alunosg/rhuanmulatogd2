@@ -1,1 +1,7 @@
 ﻿rhuan.gameDev2/.vscode
+rhuan.gameDev2/Library
+rhuan.gameDev2/Temp
+rhuan.gameDev2/UserSettings
+rhuan.gameDev2/Logs
+*.slnx
+*.csproj
