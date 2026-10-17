@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     private float maxHp;
 
     public float deathDuration = 5;
+    public float ragdollForce = 5;
+
+    public PlayerInput playerInput;
 
     private void Start()
     {
@@ -87,6 +90,26 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                playerInput.enabled = false;
+
+                rig.mass = 3;
+
+                rig.constraints = RigidbodyConstraints.None;
+
+                rig.linearVelocity = ragdollForce * (Vector3.up + new Vector3
+                (
+                    Random.Range(-1, 1),
+                    Random.Range(-1, 1),
+                    Random.Range(-1, 1)
+                ).normalized);
+
+                rig.angularVelocity = new Vector3
+                (
+                    Random.Range(-180, 180),
+                    Random.Range(-180, 180),
+                    Random.Range(-180, 180)
+                );
+
                 Invoke(nameof(Reload), deathDuration);
             }
         }
