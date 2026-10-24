@@ -15,6 +15,8 @@ public class EnemySpawner : MonoBehaviour
 
     public TMP_Text counterText;
 
+    public GameManager gameManager;
+
     private float counter = 0;
     private float currentAmount = 0;
     private float deadAmount = 0;
@@ -68,6 +70,7 @@ public class EnemySpawner : MonoBehaviour
         if(availableAmount <= 0 && currentAmount <= 0)
         {
             counterText.text = "REGION CLEARED";
+            if(gameManager) gameManager.RegionCleared();
             enabled = false;
         }
         else
