@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +13,11 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject shootFX;
     public GameObject hitFX;
+
+    public AudioSource audioSource;
+    public AudioClip shootSFX;
+    public AudioClip hitSFX;
+    public AudioClip deathSFX;
 
     public float bulletSpeed = 10;
     public float speed = 10;
@@ -57,7 +63,7 @@ public class PlayerController : MonoBehaviour
         Vector2 lookInput = context.ReadValue<Vector2>();
 
         cannonRotation.y += lookInput.x * rotationSpeed.y * Time.deltaTime;
-        cannonRotation.x -= lookInput.y * rotationSpeed.x * Time.deltaTime;
+        cannonRotation.x += lookInput.y * rotationSpeed.x * Time.deltaTime;
 
         cannonRotation.x = Mathf.Clamp(cannonRotation.x, minRotationX, maxRotationX);
 
@@ -69,6 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         if(context.performed)
         {
+            if (shootSFX) audioSource.PlayOneShot(shootSFX);
             if (shootFX) Instantiate(shootFX, bulletPoint.position, bulletPoint.rotation);
 
             GameObject bullet = Instantiate(bulletPrefab, bulletPoint.position, bulletPoint.rotation);
@@ -80,6 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         if (hp > 0)
         {
+            if (hitSFX) audioSource.PlayOneShot(hitSFX);
             if (hitFX) Instantiate(hitFX, transform.position, transform.rotation);
 
             hp -= damage;
@@ -90,6 +98,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                if (deathSFX) audioSource.PlayOneShot(deathSFX);
+
                 playerInput.enabled = false;
 
                 rig.mass = 3;

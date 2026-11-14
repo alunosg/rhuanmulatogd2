@@ -41,6 +41,11 @@ public class EnemyController : MonoBehaviour
     private Quaternion targetTurretRotation;
     private Quaternion targetCannonRotation;
 
+    public AudioSource audioSource;
+    public AudioClip shootSFX;
+    public AudioClip hitSFX;
+    public AudioClip deathSFX;
+
     public float ragdollForce = 5;
     public EnemySpawner spawner;
 
@@ -157,6 +162,7 @@ public class EnemyController : MonoBehaviour
 
     void Shoot()
     {
+        if (shootSFX) audioSource.PlayOneShot(shootSFX);
         if (shootFX) Instantiate(shootFX, bulletPoint.position, bulletPoint.rotation);
 
         GameObject bullet = Instantiate(bulletPrefab, bulletPoint.position, bulletPoint.rotation);
@@ -174,6 +180,7 @@ public class EnemyController : MonoBehaviour
             locked = true;
             nav.isStopped = true;
 
+            if (hitSFX) audioSource.PlayOneShot(hitSFX);
             if (hitFX) Instantiate(hitFX, transform.position, transform.rotation);
 
             hp -= damage;
@@ -186,6 +193,8 @@ public class EnemyController : MonoBehaviour
             else
             {
                 //Morre
+                if (deathSFX) audioSource.PlayOneShot(deathSFX);
+
                 Destroy(nav);
 
                 hpBar.transform.parent.gameObject.SetActive(false);
